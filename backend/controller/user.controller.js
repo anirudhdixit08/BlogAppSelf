@@ -140,12 +140,9 @@ export const getMyProfile = async (req,res) => {
 
 export const getAdmins = async (req, res) => {
   try {
-    const admins = await User.find({ role: 'admin' }).select('-password'); 
+    const admins = await User.find({ role: 'admin' }); 
     const plainAdmins = admins.map(admin => admin.toObject({ getters: true, virtuals: false }));
-    plainAdmins.forEach(admin => {
-        delete admin.__v;
-    });
-    res.status(200).json(plainAdmins);
+    res.status(200).json({admins});
   } catch (error) {
     console.error("Error fetching admins:", error);
     return res.status(500).json({ error: "Internal Server error" });
